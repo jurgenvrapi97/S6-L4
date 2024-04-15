@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,11 +18,16 @@ public class AuthorsService {
     @Autowired
     private AuthorsRepository authorsRepository;
 
+
     public Author save(Author body) {
         authorsRepository.findByEmail(body.getEmail()).ifPresent(user -> {
             throw new BadRequestException("L'email " + body.getEmail() + " è già stata utilizzata");
         });
         body.setAvatar("https://ui-avatars.com/api/?name=" + body.getName().charAt(0) + "+" + body.getSurname().charAt(0));
+
+        // Non hashare la password
+        // body.setPassword(passwordEncoder.encode(body.getPassword()));
+
         return authorsRepository.save(body);
     }
 
@@ -50,4 +56,10 @@ public class AuthorsService {
         found.setAvatar(body.getAvatar());
         return authorsRepository.save(found);
     }
+
+    public Author findByEmail(String email) {
+        return authorsRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Non è stato trovato nessun autore con l'email: " + email));
+    }
+
 }

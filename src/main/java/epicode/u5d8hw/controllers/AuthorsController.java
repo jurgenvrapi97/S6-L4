@@ -1,11 +1,14 @@
 package epicode.u5d8hw.controllers;
 
 import epicode.u5d8hw.entities.Author;
+import epicode.u5d8hw.payloads.AuthorLoginDTO;
+import epicode.u5d8hw.services.AuthService;
 import epicode.u5d8hw.services.AuthorsService;
 import epicode.u5d8hw.services.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

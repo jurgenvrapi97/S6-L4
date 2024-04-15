@@ -25,6 +25,7 @@ public class Author {
     private String email;
     private String dateOfBirth;
     private String avatar;
+    private String password;
 
 /* Per evitare lo stackoverflow error che avviene quando si manda un Author come risposta (può avvenire anche quando mandiamo un BlogPost con un Author)
    si può o togliere la bidirezionalità, oppure usare @JsonIgnore, oppure farsi un payload di risposta custom.
