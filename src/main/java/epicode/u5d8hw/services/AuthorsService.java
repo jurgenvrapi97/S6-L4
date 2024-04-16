@@ -1,6 +1,7 @@
 package epicode.u5d8hw.services;
 
 import epicode.u5d8hw.entities.Author;
+import epicode.u5d8hw.enums.Role;
 import epicode.u5d8hw.exceptions.BadRequestException;
 import epicode.u5d8hw.exceptions.NotFoundException;
 import epicode.u5d8hw.repositories.AuthorsRepository;
@@ -19,14 +20,17 @@ public class AuthorsService {
     private AuthorsRepository authorsRepository;
 
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     public Author save(Author body) {
         authorsRepository.findByEmail(body.getEmail()).ifPresent(user -> {
             throw new BadRequestException("L'email " + body.getEmail() + " è già stata utilizzata");
         });
         body.setAvatar("https://ui-avatars.com/api/?name=" + body.getName().charAt(0) + "+" + body.getSurname().charAt(0));
-
-        // Non hashare la password
-        // body.setPassword(passwordEncoder.encode(body.getPassword()));
+        body.setRole(Role.USER);
+        body.setPassword(passwordEncoder.encode(body.getPassword()));
 
         return authorsRepository.save(body);
     }
